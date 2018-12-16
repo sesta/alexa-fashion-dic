@@ -19,11 +19,23 @@ const handlers: {[key: string]: () => void} = {
     this.emit(':ask', message)
   },
   'WordIntent'(): void {
-    // tslint:disable-next-line:no-invalid-this
-    const word = this.event.request.intent.slots.word.resolutions.resolutionsPerAuthority[0].values[0].value.name
+    let word
+    // うまく取得できなかった場合はとりあえず謝る
+    let message = 'すいません、わかりませんでした。他に知りたい単語はありますか？'
+    try {
+      // tslint:disable-next-line:no-invalid-this
+      word = this.event.request.intent.slots.word.resolutions.resolutionsPerAuthority[0].values[0].value.name
+    } catch (e) {
+      console.log(e)
+    }
+
+    // ちゃんと辞書に登録されていたら意味を伝える
+    if (word !== undefined && wordMap[word] !== undefined) {
+      message = `${wordMap[word]} 他に知りたい単語はありますか？`
+    }
 
     // tslint:disable-next-line:no-invalid-this
-    this.emit(':ask', `${wordMap[word]} 他に知りたい単語はありますか？`)
+    this.emit(':ask', message)
   },
   'AMAZON.HelpIntent'(): void {
     // tslint:disable-next-line:no-invalid-this
