@@ -20,24 +20,25 @@ const handlers: {[key: string]: () => void} = {
   },
   'WordIntent'(): void {
     // tslint:disable-next-line:no-invalid-this
-    const word = this.event.request.intent.slots.word.value
+    const word = this.event.request.intent.slots.word.resolutions.resolutionsPerAuthority[0].values[0].value.name
 
     // tslint:disable-next-line:no-invalid-this
-    this.emit(':ask', wordMap[word])
+    this.emit(':ask', `${wordMap[word]} 他に知りたい単語はありますか？`)
   },
   'AMAZON.HelpIntent'(): void {
     // tslint:disable-next-line:no-invalid-this
-    this.emit(':ask', '知りたい単語をどうぞ。', 'どうしますか？')
+    this.emit(':ask', 'ファッションに関する用語の意味をお伝えします。知りたい単語をどうぞ。', 'どうしますか？')
   },
   'AMAZON.CancelIntent'(): void {
     // tslint:disable-next-line:no-invalid-this
-    this.emit(':tell', 'さようなら')
+    this.emit(':tell', 'ご利用いただきありがとうございました。')
   },
   'AMAZON.StopIntent'(): void {
     // tslint:disable-next-line:no-invalid-this
-    this.emit(':tell', 'さようなら')
+    this.emit(':tell', 'ご利用いただきありがとうございました。')
   },
   'SessionEndedRequest'(): void {
-    // Nothing to do
+    // tslint:disable-next-line:no-invalid-this
+    this.emit(':tell', 'ご利用いただきありがとうございました。')
   }
 }
