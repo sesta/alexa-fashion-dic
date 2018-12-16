@@ -1,0 +1,5 @@
+{
+  "description": "Fashion Dictionary Skill",
+  "handler": "index.handle",
+  "runtime": "nodejs8.10"
+}
